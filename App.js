@@ -4,13 +4,28 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function App() {
   const [input, setInput] = useState('')
-  
+  const [resultado, setResultado] = useState('0')
+
+  const calcular = ()=>{
+    try {
+      const r = eval(input);
+      if (isNaN(r) || !isFinite(r)) {
+        setResultado('Error');
+      } else {
+        setResultado(r.toString());
+      }
+    } catch {
+      setResultado('Error');
+    }
+  }
+
   const presionar = valor =>{
     setInput(input + valor)
   }
 
   const borrar = () =>{
     setInput('')
+    setResultado('0')
   }
 
   const Boton = ({texto , presionado}) => (
@@ -22,7 +37,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.input}>{input || '0'}</Text>
-      <Text style={styles.resultado}> Resultado </Text>
+      <Text style={styles.resultado}> {resultado} </Text>
       <View style={styles.fila}>
         <Boton texto= '7' presionado={()=>presionar('7')}/>
         <Boton texto= '8' presionado={()=>presionar('8')}/>
@@ -44,7 +59,7 @@ export default function App() {
       <View style={styles.fila}>
         <Boton texto= '0' presionado={()=>presionar('0')}/>
         <Boton texto= 'C' presionado={borrar}/>
-        <Boton texto= '=' />
+        <Boton texto= '=' presionado={calcular}/>
         <Boton texto= '/' presionado={()=>presionar('/')}/>
       </View>
       <StatusBar style="auto" />
